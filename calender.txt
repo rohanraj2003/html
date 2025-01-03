@@ -1,0 +1,42 @@
+<html>
+<head>
+    <title>Generate Calendar</title>
+    <script>
+        function generateCalendar() {
+            let year = parseInt(document.getElementById("yearInput").value);
+            if (isNaN(year) || year <= 0) return alert("Please enter a valid year.");
+
+            const months = ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"];
+            const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            let calendarHTML = "";
+
+            months.forEach((month, m) => {
+                calendarHTML += `<h2>${month} ${year}</h2><table border='1'><tr>${days.map(d => <th>${d}</th>).join('')}</tr><tr>`;
+                let firstDay = new Date(year, m, 1).getDay();
+                let daysInMonth = new Date(year, m + 1, 0).getDate();
+                let currentDay = 1;
+
+                for (let i = 0; i < Math.ceil((firstDay + daysInMonth) / 7) * 7; i++) {
+                    if (i < firstDay || currentDay > daysInMonth) {
+                        calendarHTML += "<td></td>";
+                    } else {
+                        calendarHTML += <td>${currentDay++}</td>;
+                    }
+                    if ((i + 1) % 7 === 0) calendarHTML += "</tr><tr>";
+                }
+
+                calendarHTML += "</tr></table>";
+            });
+             document.getElementById("calendar").innerHTML = calendarHTML;
+        }
+    </script>
+</head>
+<body>
+    <h1>Generate Calendar</h1>
+    <label>Year:</label>
+    <input type="number" id="yearInput" placeholder="Enter year" min="1900">
+    <button onclick="generateCalendar()">Generate</button>
+    <div id="calendar"></div>
+</body>
+</html>
